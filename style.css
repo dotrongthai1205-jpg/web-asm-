@@ -1,0 +1,295 @@
+/* Dùng chung cho các phiên bản: màu và khoảng cách có thể sửa tại đây. */
+:root { --green: #678e3e; --dark: #303530; --light: #f1f5f8; --text: #252a26; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: Arial, sans-serif; line-height: 1.65; color: var(--text); }
+img { display: block; width: 100%; object-fit: cover; }
+a { color: inherit; }
+button, input, textarea { font: inherit; }
+:focus-visible { outline: 3px solid #df9a25; outline-offset: 5px; }
+.container { width: min(1120px, 90%); margin-inline: auto; }
+.section { padding-block: 80px; scroll-margin-top: 70px; }
+h1, h2, h3, p { margin-top: 0; }
+h2 { font-size: 30px; line-height: 1.3; }
+h3 { font-size: 18px; }
+.eyebrow { color: var(--green); font-family: Georgia, serif; font-style: italic; font-size: 25px; letter-spacing: 3px; margin-bottom: 8px; }
+.button { display: inline-block; background: var(--green); color: white; text-decoration: none; padding: 10px 24px; border: 2px solid var(--green); letter-spacing: 2px; font-weight: bold; cursor: pointer; }
+.button:hover { background: #496c29; border-color: #496c29; }
+.button.outline { border-color: white; background: transparent; }
+.button.outline:hover { background: white; color: var(--green); }
+/* Nút mở sidebar menu cố định ở góc trên bên trái màn hình */
+.nav-btn {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 2px solid var(--green);
+  border-radius: 6px;
+  color: var(--green);
+  background: white;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn-icon {
+  font-size: 20px;
+}
+
+.nav-btn:hover {
+  background: var(--green);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Ẩn checkbox hack */
+.sidebar-toggle-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Lớp phủ mờ (overlay) khi mở sidebar */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Thanh Sidebar Menu bên trái - thiết kế chuẩn như hình mẫu */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: #eaeceb;
+  z-index: 999;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Trạng thái mở sidebar */
+.sidebar-toggle-input:checked ~ .sidebar,
+.sidebar:target,
+.sidebar.show-sidebar {
+  transform: translateX(0);
+}
+
+.sidebar-toggle-input:checked ~ .sidebar-overlay,
+.sidebar:target ~ .sidebar-overlay,
+.sidebar-overlay.show-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Nút đóng [✕] ở góc trên bên trái menu như trong ảnh */
+.sidebar-header {
+  margin-bottom: 28px;
+}
+
+.nav-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #f4f6f2;
+  border: 1px solid #cdd1c9;
+  border-radius: 3px;
+  color: #303530;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.nav-close:hover {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+/* Danh sách mục menu */
+.sidebar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebar-links li {
+  margin: 0;
+}
+
+.sidebar-link {
+  display: inline-block;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #252a26;
+  text-transform: uppercase;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover: chuyển sang màu xanh lá #678e3e như mục SERVICES trong ảnh */
+.sidebar-link:hover,
+.sidebar-link:focus,
+.sidebar-link.active {
+  color: var(--green);
+  transform: translateX(4px);
+}
+
+.mobile-menu-btn {
+  display: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 4px;
+  font-weight: bold;
+  user-select: none;
+}
+
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .mobile-menu-btn { display: inline-flex; align-items: center; }
+}
+.hero { min-height: 560px; display: grid; place-items: center; text-align: center; color: white; background: linear-gradient(#0006, #0008), url('../image/TEA%20STATION.jpg') center/cover; padding: 70px 5%; }
+.hero .eyebrow { color: #b6d68e; }
+.hero h1 { font-size: 52px; line-height: 1.3; letter-spacing: 5px; max-width: 800px; margin: 14px auto 28px; }
+/* LAB 7.1: grid container chia bốn cột bằng nhau. */
+.features { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--light); }
+.feature { text-align: center; padding: 38px 24px; border: 1px solid #c83232; }
+.feature h3 { color: var(--green); font-size: 14px; letter-spacing: 3px; }
+.feature p { font-size: 14px; max-width: 230px; margin: auto; }
+.feature:hover { background: var(--green); color: white; }
+.feature:hover h3 { color: white; }
+/* minmax(0, 1fr) cho phép nội dung co lại bên trong cột. */
+.about-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: center; }
+.about-photo { border: 7px solid var(--green); border-radius: 10px; overflow: hidden; background: var(--green); }
+.about-photo img { aspect-ratio: 4 / 3; }
+.products { background: var(--dark); color: white; }
+.product-grid, .service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.product { border: 1px solid #c83232; border-bottom: 4px solid var(--green); padding: 24px 12px 20px; }
+.product img { aspect-ratio: 4 / 3; border-radius: 12px; margin-bottom: 20px; }
+.product h3 { letter-spacing: 2px; }
+.price { color: #b6d68e; font-weight: bold; }
+.section-heading { text-align: center; margin-bottom: 45px; }
+.service { background: var(--green); color: white; text-align: center; border: 5px solid var(--green); border-radius: 25px; overflow: hidden; box-shadow: 0 7px 14px #0002; }
+.service img { aspect-ratio: 3 / 2; }
+.service-body { padding: 25px 18px; }
+.service h3 { font-size: 22px; letter-spacing: 2px; }
+.social-grid { display: grid; grid-template-columns: minmax(0, 720px); justify-content: center; align-items: start; }
+.social-panel { min-width: 0; background: var(--light); padding: 24px; }
+.social-panel a { overflow-wrap: anywhere; }
+.facebook-post { padding: 0; overflow: hidden; border: 1px solid #dfe3e8; border-radius: 14px; background: #fff; box-shadow: 0 2px 10px #15223812; color: #1c1e21; line-height: 1.45; }
+.post-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
+.post-avatar, .comment-avatar { flex: 0 0 auto; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.post-header h3 { margin: 0; font-size: 17px; letter-spacing: 0; }
+.post-header p { margin: 2px 0 0; color: #65676b; font-size: 13px; }
+.verified-mark { display: inline-grid; width: 16px; height: 16px; place-items: center; border-radius: 50%; background: #1877f2; color: #fff; font-size: 11px; }
+.post-menu { margin-left: auto; border: 0; background: transparent; color: #65676b; font-size: 22px; letter-spacing: 2px; cursor: pointer; }
+.post-copy { margin: 0; padding: 4px 18px 14px; font-size: 16px; }
+.post-copy strong { white-space: nowrap; }
+.post-photo { display: block; width: 100%; max-height: 560px; aspect-ratio: 4 / 3; object-fit: cover; background: #eee; }
+.post-reactions { display: flex; align-items: center; gap: 3px; padding: 10px 16px; color: #65676b; font-size: 14px; }
+.post-reactions .like-count { margin-left: 5px; }
+.post-reactions .comment-count { margin-left: auto; }
+.post-actions { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 14px; border-top: 1px solid #e4e6eb; border-bottom: 1px solid #e4e6eb; }
+.post-action { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; border: 0; background: transparent; color: #65676b; font-size: 17px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.post-action:hover { background: #f2f3f5; }
+.post-action span { font-size: 14px; }
+.like-action.is-liked { color: #1877f2; }
+.post-comments { padding: 8px 16px 0; }
+.post-comment { display: table; max-width: 100%; margin: 5px 0; padding: 8px 12px; border-radius: 16px; background: #f0f2f5; overflow-wrap: anywhere; }
+.comment-form { display: flex; align-items: center; gap: 9px; padding: 12px 16px 8px; }
+.comment-avatar { width: 36px; height: 36px; }
+.comment-form input { min-width: 0; flex: 1; height: 40px; padding: 0 15px; border: 0; border-radius: 22px; background: #f0f2f5; }
+.comment-form button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: #1877f2; color: #fff; cursor: pointer; }
+.post-note { margin: 0; padding: 0 16px 14px; font-size: 12px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.embed { width: 100%; border: 0; background: #eee; }
+.video-section { background: #f1f5f8; }
+.video-frame { width: 100%; overflow: hidden; border-radius: 10px; background: #111; box-shadow: 0 12px 32px #0002; }
+.video-embed { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; background: #111; }
+.post-embed { height: 520px; }
+.local-like { display: inline-block; cursor: pointer; border: 1px solid var(--green); padding: 8px 14px; margin-bottom: 16px; }
+.local-like:has(input:checked) { color: white; background: var(--green); }
+.note { font-size: 14px; color: #565e57; }
+/* LAB 8.1: mở ảnh sản phẩm bằng thư viện Lightbox2. */
+.photo-link { display: block; }
+.photo-link:hover img { filter: brightness(.9); }
+.map-embed { height: 360px; border-radius: 12px; }
+.contact-section { background: var(--light); }
+.contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: center; }
+.contact-details { display: grid; gap: 28px; }
+.contact-item h3 { margin: 0 0 5px; color: var(--green); font-family: Georgia, serif; font-size: 22px; font-style: italic; letter-spacing: 3px; }
+.contact-item p { margin: 0; font-size: 14px; line-height: 1.6; }
+.contact-item a { text-decoration: none; }
+.contact-item span { color: #68716a; font-size: 12px; }
+.contact-form-card { overflow: hidden; padding: 25px 12px 0; border-radius: 5px; background: #fff; box-shadow: 0 5px 14px #0002; }
+.contact-form-card h2 { margin: 0 0 22px; color: #6f8eaa; text-align: center; font-family: Georgia, serif; font-size: 20px; font-style: italic; letter-spacing: 4px; }
+.contact-form { display: grid; gap: 9px; }
+.contact-form input, .contact-form textarea { width: 100%; padding: 10px; border: 0; border-radius: 3px; background: var(--light); color: var(--text); font-size: 12px; letter-spacing: 3px; }
+.contact-form textarea { min-height: 100px; resize: vertical; }
+.contact-submit { margin: 0 -12px; padding: 11px; border: 0; background: var(--green); color: #fff; font-weight: bold; letter-spacing: 4px; cursor: pointer; }
+.contact-submit:hover { background: #496c29; }
+.contact-note { margin: 10px 0 0; color: #68716a; font-size: 12px; text-align: center; }
+@media (max-width: 900px) {
+  .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-grid, .contact-grid { gap: 32px; }
+  .product-grid, .service-grid { gap: 20px; }
+}
+@media (max-width: 700px) {
+  .features, .about-grid, .product-grid, .service-grid, .contact-grid { grid-template-columns: 1fr; }
+  .features { padding: 0; }
+  .feature { padding: 34px 22px; }
+  .about-grid, .contact-grid { gap: 28px; }
+  .product-grid, .service-grid { gap: 24px; }
+  .product { padding: 18px 14px 20px; }
+  .section { padding-block: 56px; }
+  .section-heading { margin-bottom: 30px; }
+  .hero { min-height: 480px; }
+  .hero h1 { font-size: clamp(32px, 9vw, 46px); letter-spacing: 2px; }
+  .service { width: min(100%, 420px); justify-self: center; }
+  .service img { aspect-ratio: 4 / 3; }
+  .slide img { height: min(420px, 68vh); }
+  .contact-form-card { width: 100%; }
+  .footer { min-height: 250px; padding: 48px 18px; gap: 26px; }
+}
+.footer { min-height: 300px; padding: 64px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; background: var(--dark); color: #fff; text-align: center; }
+.footer-social { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.footer-social a { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 4px; background: #e6e8e5; color: var(--dark); transition: background .2s ease, color .2s ease, transform .2s ease; }
+.footer-social a:hover { background: var(--green); color: #fff; transform: translateY(-2px); }
+.footer-social svg { width: 28px; height: 28px; fill: currentColor; }
+.footer p { max-width: 1100px; margin: 0; font-size: clamp(16px, 2.2vw, 24px); line-height: 1.8; }
+.footer p span { color: var(--green); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
